@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeurIPS 2026 - Visualization Supplementary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        
+        .hero-title {
+            font-weight: 900; font-size: 3.2rem; line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .glass-card { background: rgba(23, 32, 53, 0.8); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); }
+        .input-badge { background: #3b82f6; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; margin-bottom: 12px; display: inline-block; text-transform: uppercase; }
+        
+        .method-card { border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 14px; overflow: hidden; position: relative; background: rgba(15, 23, 42, 0.9); }
+        .blue-card-bg { background: rgba(23, 37, 84, 0.3) !important; border: 1px solid rgba(59, 130, 246, 0.3) !important; }
+        .blue-card-ours { border: 2px solid rgba(59, 130, 246, 0.6) !important; box-shadow: 0 0 50px rgba(59, 130, 246, 0.2); background: rgba(23, 37, 84, 0.45) !important; }
+        
+        .video-label { font-size: 0.85rem; font-weight: 700; padding: 10px; text-align: center; background: rgba(15, 23, 42, 0.95); width: 100%; border-top: 1px solid rgba(255,255,255,0.1); }
+        .label-ours { color: #60a5fa; background: rgba(30, 58, 138, 0.6); }
+
+        video, img { width: 100%; aspect-ratio: 16/9; background: transparent; object-fit: cover; }
+        .img-pose { object-fit: contain; background: transparent; }
+
+        .dataset-select { 
+            background: #1e293b; border: 2px solid #334155; border-radius: 10px; padding: 10px 20px; 
+            font-size: 1.1rem; font-weight: 600; color: #60a5fa; cursor: pointer; outline: none; transition: 0.3s;
+        }
+        .dataset-select:hover { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .nav-arrow { background: rgba(255,255,255,0.05); cursor: pointer; border-radius: 10px; transition: 0.2s; font-weight: 900; padding: 10px 20px; }
+        .nav-arrow:hover { background: #3b82f6; color: white; }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="p-6 md:p-12 lg:p-20">
+
+    <header class="max-w-7xl mx-auto text-center mb-32">
+        <h1 class="hero-title">Unified Generative-Predictive Modeling for 4D Scene Understanding</h1>
+        <p class="text-blue-400 font-mono text-xl tracking-[0.2em] font-bold mb-4 uppercase">Visual Comparison Supplementary</p>
+        <div class="inline-block px-4 py-1 rounded-full border border-slate-700 text-slate-500 text-xs font-bold tracking-widest uppercase bg-slate-900/50">
+            NeurIPS 2026 Submission ID: 880
+        </div>
+    </header>
+
+    <main class="max-w-[1440px] mx-auto space-y-56">
+
+        <section id="generation">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-12 border-b border-white/10 pb-8 gap-6">
+                <div>
+                    <h2 class="text-5xl font-black text-white mb-3 italic tracking-tight uppercase">01. Generation</h2>
+                    <p class="text-slate-400 text-lg">Novel view synthesis from <b>Start/End frames + Trajectory</b></p>
+                </div>
+                <div class="flex items-center gap-6">
+                    <select class="dataset-select" onchange="switchDataset('gen', this.value)">
+                        <option value="re10k">Dataset: RealEstate10K</option>
+                        <option value="dl3dv">Dataset: DL3DV</option>
+                        <option value="spatialvid_nvs">Dataset: SpatialVid NVS</option>
+                    </select>
+                    <div class="flex gap-3 items-center">
+                        <button onclick="changeCase('gen', -1)" class="nav-arrow">PREV</button>
+                        <span id="gen-counter" class="text-blue-400 min-w-[100px] text-center font-black text-xl font-mono">Case 1 / 5</span>
+                        <button onclick="changeCase('gen', 1)" class="nav-arrow">NEXT</button>
+                    </div>
+                </div>
+            </div>
+            <div id="gen-re10k" class="gen-dataset-group"></div>
+            <div id="gen-dl3dv" class="gen-dataset-group hidden"></div>
+            <div id="gen-spatialvid_nvs" class="gen-dataset-group hidden"></div>
+        </section>
+
+        <section id="prediction">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-12 border-b border-white/10 pb-8 gap-6">
+                <div>
+                    <h2 class="text-5xl font-black text-white mb-4 italic tracking-tight uppercase">02. Prediction</h2>
+                    <div class="flex gap-3">
+                        <button onclick="switchPredMode('full')" id="btn-mode-full" class="px-6 py-2 bg-blue-600 rounded-xl font-bold text-sm transition">Full RGB Sequence</button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <select class="dataset-select" onchange="switchDataset('pred', this.value)">
+                        <option value="scannetpp">Dataset: ScanNet++</option>
+                        <option value="dl3dv">Dataset: DL3DV</option>
+                    </select>
+                    <div class="flex gap-3 items-center">
+                        <button onclick="changeCase('pred', -1)" class="nav-arrow">←</button>
+                        <span id="pred-counter" class="text-pink-400 min-w-[100px] text-center font-black text-xl font-mono">Case 1 / 5</span>
+                        <button onclick="changeCase('pred', 1)" class="nav-arrow">→</button>
+                    </div>
+                </div>
+            </div>
+            <div id="pred-scannetpp" class="pred-dataset-group hidden"></div>
+            <div id="pred-dl3dv" class="pred-dataset-group hidden"></div>
+        </section>
+    </main>
+
+    <footer class="max-w-7xl mx-auto mt-64 pb-20 text-center border-t border-white/10 pt-16 text-slate-600 text-sm tracking-[0.3em] font-bold">
+        © NEURIPS 2026 - SUPPLEMENTAL MATERIAL
+    </footer>
+
+    <script>
+        let currentMode = 'full';
+        let syncIntervals = {'gen': null, 'pred': null};
+
+        function setupVideoSync(caseEl, taskPrefix) {
+            if (syncIntervals[taskPrefix]) clearInterval(syncIntervals[taskPrefix]);
+            const videos = Array.from(caseEl.querySelectorAll('video'));
+            if (videos.length < 2) return;
+            const master = videos[0];
+            const followers = videos.slice(1);
+            const doSync = () => {
+                followers.forEach(v => {
+                    if (Math.abs(v.currentTime - master.currentTime) > 0.06) {
+                        v.currentTime = master.currentTime;
+                    }
+                });
+            };
+            master.onplay = () => followers.forEach(v => v.play());
+            master.onpause = () => followers.forEach(v => v.pause());
+            master.onseeking = doSync;
+            syncIntervals[taskPrefix] = setInterval(doSync, 100);
+        }
+
+        function generateGenCase(dataset, sampleId, isHidden = true) {
+            const baseDir = `all_real/results/${dataset}`;
+            return `
+            <div class="gen-case ${isHidden ? 'hidden' : ''} grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="lg:col-span-1">
+                    <div class="glass-card p-6 rounded-2xl h-full blue-card-bg">
+                        <span class="input-badge">Input Conditions</span>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <img src="${baseDir}/img_start_end/${sampleId}/gt_start.png" class="rounded-lg border border-white/10">
+                            <img src="${baseDir}/img_start_end/${sampleId}/gt_end.png" class="rounded-lg border border-white/10">
+                        </div>
+                        <p class="text-xs text-blue-400 font-bold mb-2 uppercase tracking-widest text-center">Camera Trajectory</p>
+                        <img src="${baseDir}/viz_cam/${sampleId}/gt_frustum_wireframe_cropped.png" class="rounded-xl border border-blue-500/30 bg-black/40 w-full shadow-2xl">
+                    </div>
+                </div>
+                <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="method-card"><video src="${baseDir}/ours_final_nvs/${sampleId}/gt_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">Ground Truth</div></div>
+                    <div class="method-card blue-card-ours"><video src="${baseDir}/ours_final_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label label-ours font-black">OURS (Unified)</div></div>
+                    <div class="method-card"><video src="${baseDir}/seva_nvs/${sampleId}/samples-rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">SEVA</div></div>
+                    <div class="method-card"><video src="${baseDir}/wan_flf_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">Wan et al.</div></div>
+                    <div class="method-card"><video src="${baseDir}/dfot_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">DFOT</div></div>
+                </div>
+            </div>`;
+        }
+
+        function generatePredCase(dataset, sampleId, isHidden = true) {
+            const baseDir = `all_real/results/${dataset}`;
+            return `
+            <div class="pred-case ${isHidden ? 'hidden' : ''} space-y-24">
+                <div class="pred-mode-content full-content space-y-20">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        <div class="lg:col-span-3">
+                            <div class="glass-card p-6 rounded-2xl blue-card-bg">
+                                <span class="input-badge bg-pink-600">Reference Video</span>
+                                <video src="${baseDir}/viz_depth/${sampleId}/gt_rgb_8fps.mp4" autoplay loop muted playsinline class="rounded-xl"></video>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-9">
+                            <h4 class="text-xs font-black tracking-[0.2em] text-slate-500 uppercase mb-6">Depth Comparison</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/gt_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">GT</div></div>
+                                <div class="method-card blue-card-ours border-pink-500/40"><video src="${baseDir}/viz_depth/${sampleId}/ours_depth.mp4" autoplay loop muted playsinline></video><div class="video-label text-pink-400 font-bold">Ours</div></div>
+                                <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/chronodepth_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">Chrono</div></div>
+                                <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/geo4d_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">Geo4D</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full">
+                        <h4 class="text-xs font-black tracking-[0.3em] text-blue-400 uppercase mb-10 text-center">Camera Trajectory Benchmarking</h4>
+                        <div class="grid grid-cols-2 gap-8 w-full mt-8">
+                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/gt_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-slate-500">Ground Truth</div></div>
+                            <div class="method-card blue-card-ours"><img src="${baseDir}/viz_cam/${sampleId}/ours_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-blue-400 font-bold">Ours</div></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-8 w-full mt-8">
+                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/geo4d_raw_wxyz_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-slate-500">Baseline: Geo4D</div></div>
+                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/raydiffusion_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-slate-500">Baseline: RayDiffusion</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function switchDataset(taskPrefix, datasetName) {
+            document.querySelectorAll(`.${taskPrefix}-dataset-group`).forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`${taskPrefix}-${datasetName}`);
+            target.classList.remove('hidden');
+            resetToFirstCase(target, taskPrefix);
+        }
+    
+        function changeCase(taskPrefix, step) {
+            const group = document.querySelector(`.${taskPrefix}-dataset-group:not(.hidden)`);
+            const cases = group.querySelectorAll(`.${taskPrefix}-case`);
+            let idx = Array.from(cases).findIndex(c => !c.classList.contains('hidden'));
+            cases[idx].classList.add('hidden');
+            idx = (idx + step + cases.length) % cases.length;
+            cases[idx].classList.remove('hidden');
+            if (taskPrefix === 'pred') syncPredModeDisplay(cases[idx]);
+            setupVideoSync(cases[idx], taskPrefix);
+            document.getElementById(`${taskPrefix}-counter`).innerText = `Case ${idx + 1} / ${cases.length}`;
+            cases[idx].querySelectorAll('video').forEach(v => v.play());
+        }
+
+        function switchPredMode(mode) {
+            currentMode = mode;
+            const active = document.querySelector('.pred-case:not(.hidden)');
+            if (active) syncPredModeDisplay(active);
+            document.getElementById('btn-mode-full').className = mode === 'full' ? 'px-6 py-2 bg-blue-600 rounded-xl font-bold text-sm transition' : 'px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-slate-500 text-sm transition';
+        }
+
+        function syncPredModeDisplay(caseEl) {
+            caseEl.querySelectorAll('.pred-mode-content').forEach(el => el.classList.add('hidden'));
+            caseEl.querySelector(`.${currentMode}-content`).classList.remove('hidden');
+        }
+
+        function resetToFirstCase(group, taskPrefix) {
+            const cases = group.querySelectorAll(`.${taskPrefix}-case`);
+            cases.forEach((c, i) => c.classList.toggle('hidden', i !== 0));
+            if (taskPrefix === 'pred') syncPredModeDisplay(cases[0]);
+            setupVideoSync(cases[0], taskPrefix);
+            document.getElementById(`${taskPrefix}-counter`).innerText = `Case 1 / ${cases.length}`;
+        }
+
+        window.onload = () => {
+            const buildSequence = (n) => Array.from({length: n}, (_, i) => `sample_${String(i).padStart(5, '0')}`);
+            const buildRange = (start, end) => {
+                let arr = [];
+                for (let i = start; i <= end; i++) arr.push(`sample_${String(i).padStart(5, '0')}`);
+                return arr;
+            };
+            const buildManual = (list) => list.map(id => id.toString().startsWith('sample_') ? id : `sample_${String(id).padStart(5, '0')}`);
+
+            const genConfig = { 
+                're10k': buildManual([15, 16, 20, 39, 41]),     
+                'dl3dv': buildManual([1, 5, 9]),    
+                'spatialvid_nvs': buildManual([1, 5, 9]),
+            };
+
+            const predConfig = { 
+                'scannetpp': buildManual([4, 6]),
+                'dl3dv': buildManual([6, 12,16,17])
+            };
+
+            Object.keys(genConfig).forEach(ds => {
+                const container = document.getElementById(`gen-${ds}`);
+                if (container) container.innerHTML = genConfig[ds].map((id, i) => generateGenCase(ds, id, i !== 0)).join('');
+            });
+            
+            Object.keys(predConfig).forEach(ds => {
+                const container = document.getElementById(`pred-${ds}`);
+                if (container) container.innerHTML = predConfig[ds].map((id, i) => generatePredCase(ds, id, i !== 0)).join('');
+            });
+
+            switchDataset('gen', 're10k');
+            switchDataset('pred', 'scannetpp');
+        };
+    </script>
+</body>
+</html>
