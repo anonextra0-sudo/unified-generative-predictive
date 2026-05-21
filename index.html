@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeurIPS 2026 - Visualization Supplementary</title>
+    <title>Visualization Supplementary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -46,9 +46,6 @@
     <header class="max-w-7xl mx-auto text-center mb-32">
         <h1 class="hero-title">Unified Generative-Predictive Modeling for 4D Scene Understanding</h1>
         <p class="text-blue-400 font-mono text-xl tracking-[0.2em] font-bold mb-4 uppercase">Visual Comparison Supplementary</p>
-        <div class="inline-block px-4 py-1 rounded-full border border-slate-700 text-slate-500 text-xs font-bold tracking-widest uppercase bg-slate-900/50">
-            NeurIPS 2026 Submission ID: 880
-        </div>
     </header>
 
     <main class="max-w-[1440px] mx-auto space-y-56">
@@ -103,7 +100,7 @@
     </main>
 
     <footer class="max-w-7xl mx-auto mt-64 pb-20 text-center border-t border-white/10 pt-16 text-slate-600 text-sm tracking-[0.3em] font-bold">
-        © NEURIPS 2026 - SUPPLEMENTAL MATERIAL
+        © SUPPLEMENTAL MATERIAL
     </footer>
 
     <script>
@@ -146,7 +143,7 @@
                 </div>
                 <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-6">
                     <div class="method-card"><video src="${baseDir}/ours_final_nvs/${sampleId}/gt_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">Ground Truth</div></div>
-                    <div class="method-card blue-card-ours"><video src="${baseDir}/ours_final_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label label-ours font-black">OURS (Unified)</div></div>
+                    <div class="method-card blue-card-ours"><video src="${baseDir}/ours_final_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label label-ours">Ours</div></div>
                     <div class="method-card"><video src="${baseDir}/seva_nvs/${sampleId}/samples-rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">SEVA</div></div>
                     <div class="method-card"><video src="${baseDir}/wan_flf_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">Wan et al.</div></div>
                     <div class="method-card"><video src="${baseDir}/dfot_nvs/${sampleId}/pred_rgb.mp4" autoplay loop muted playsinline></video><div class="video-label">DFOT</div></div>
@@ -170,8 +167,8 @@
                             <h4 class="text-xs font-black tracking-[0.2em] text-slate-500 uppercase mb-6">Depth Comparison</h4>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/gt_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">GT</div></div>
-                                <div class="method-card blue-card-ours border-pink-500/40"><video src="${baseDir}/viz_depth/${sampleId}/ours_depth.mp4" autoplay loop muted playsinline></video><div class="video-label text-pink-400 font-bold">Ours</div></div>
-                                <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/chronodepth_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">Chrono</div></div>
+                                <div class="method-card blue-card-ours border-pink-500/40"><video src="${baseDir}/viz_depth/${sampleId}/ours_depth.mp4" autoplay loop muted playsinline></video><div class="video-label label-ours">Ours</div></div>
+                                <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/chronodepth_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">ChronoDepth</div></div>
                                 <div class="method-card"><video src="${baseDir}/viz_depth/${sampleId}/geo4d_depth.mp4" autoplay loop muted playsinline></video><div class="video-label">Geo4D</div></div>
                             </div>
                         </div>
@@ -180,12 +177,12 @@
                     <div class="w-full">
                         <h4 class="text-xs font-black tracking-[0.3em] text-blue-400 uppercase mb-10 text-center">Camera Trajectory Benchmarking</h4>
                         <div class="grid grid-cols-2 gap-8 w-full mt-8">
-                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/gt_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-slate-500">Ground Truth</div></div>
-                            <div class="method-card blue-card-ours"><img src="${baseDir}/viz_cam/${sampleId}/ours_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-blue-400 font-bold">Ours</div></div>
+                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/gt_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label">GT</div></div>
+                            <div class="method-card blue-card-ours"><img src="${baseDir}/viz_cam/${sampleId}/ours_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label label-ours">Ours</div></div>
                         </div>
                         <div class="grid grid-cols-2 gap-8 w-full mt-8">
-                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/geo4d_raw_wxyz_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-slate-500">Baseline: Geo4D</div></div>
-                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/raydiffusion_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label text-slate-500">Baseline: RayDiffusion</div></div>
+                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/geo4d_raw_wxyz_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label">Geo4D</div></div>
+                            <div class="method-card blue-card-bg"><img src="${baseDir}/viz_cam/${sampleId}/raydiffusion_frustum_wireframe_cropped.png" class="w-full h-auto img-pose"><div class="video-label">RayDiffusion</div></div>
                         </div>
                     </div>
                 </div>
@@ -216,7 +213,7 @@
             currentMode = mode;
             const active = document.querySelector('.pred-case:not(.hidden)');
             if (active) syncPredModeDisplay(active);
-            document.getElementById('btn-mode-full').className = mode === 'full' ? 'px-6 py-2 bg-blue-600 rounded-xl font-bold text-sm transition' : 'px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-slate-500 text-sm transition';
+            document.getElementById('btn-mode-full').className = mode === 'full' ? 'px-6 py-2 bg-blue-600 rounded-xl font-bold text-sm transition' : 'px-6 py-2 bg-white/5 border border-white/10 rounded-xl font-bold text-sm transition';
         }
 
         function syncPredModeDisplay(caseEl) {
